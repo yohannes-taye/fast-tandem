@@ -270,6 +270,12 @@ void TandemBackendImpl::CallAsync(
 
         //TODOME: HERE is where the depth map is diplayed on the UI 
         /* --- 2. PREVIOUS: Push depth map to output_previous wrapper --- */
+      String windowName = "The Guitar"; //Name of the window
+
+        namedWindow(windowName); // Create a window
+
+
+        waitKey(1); // Wait for any keystroke in the window
         const float depth_max_value_previous = *std::max_element(output_previous->depth, output_previous->depth + width * height);
         for (dso::IOWrap::Output3DWrapper *ow : outputWrapper) {
           ow->pushDrKfImage(bgrs_previous[corrected_ref_index_previous].data);

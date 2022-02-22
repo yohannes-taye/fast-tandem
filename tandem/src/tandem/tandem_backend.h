@@ -16,7 +16,9 @@
 
 #include <boost/thread/thread.hpp>
 #include <algorithm>
-
+#include <iostream>
+using namespace cv;
+using namespace std;
 
 class TandemCoarseTrackingDepthMap {
 public:

@@ -155,7 +155,7 @@ public:
 private:
 	bool ownData;
 };
-
+//TODOME: Here is the definition for MinimalImageB3
 typedef Eigen::Matrix<unsigned char,3,1> Vec3b;
 typedef MinimalImage<float> MinimalImageF;
 typedef MinimalImage<Vec3f> MinimalImageF3;

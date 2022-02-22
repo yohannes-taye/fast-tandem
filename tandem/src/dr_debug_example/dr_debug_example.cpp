@@ -119,7 +119,7 @@ int main(int argc, char const *argv[]) {
 
                 // Blocking
                 fusion.GetRenderResult(bgr, depth);
-
+                //TODOME: found an implementation of showping the depth using opencv
                 if (options.display_rgb) {
                     for (int i = 0; i < bgr.size(); i++) {
                         cv::Mat virtual_bgr(dr_options.height, dr_options.width, CV_8UC3, bgr[i]);

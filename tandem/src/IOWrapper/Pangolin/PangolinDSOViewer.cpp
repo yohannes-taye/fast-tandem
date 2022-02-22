@@ -656,7 +656,7 @@ void PangolinDSOViewer::publishKeyframes(
 		keyframesByKFID[fh->frameID]->setFromKF(fh, HCalib);
 	}
 }
-
+//TODOME: camera pose publishing is also done here 
 void PangolinDSOViewer::publishDrframes(
         unsigned char* image, float* depth, float* confidence,
         SE3 pose, CalibHessian* HCalib)
@@ -669,7 +669,7 @@ void PangolinDSOViewer::publishDrframes(
     DrFrameDisplay* dfd = new DrFrameDisplay(image, depth, confidence, pose, HCalib);
     drframes.push_back(dfd);
 }
-
+//TODOME: camera pose publishing is done here
 void PangolinDSOViewer::publishCamPose(FrameShell* frame,
 		CalibHessian* HCalib)
 {
@@ -746,16 +746,32 @@ void PangolinDSOViewer::pushDrKfDepth(float const* image, float depth_min, float
 
     boost::unique_lock<boost::mutex> lk(openImagesMutex);
 
-    for (int _h = 0; _h < h; _h++) {
+    // for (int _h = 0; _h < h; _h++) {
+    //     for (int _w = 0; _w < w; _w++) {
+    //         const int i = _h*w + _w;
+    //         const float valf = (image[i] - depth_min) / (depth_max - depth_min);
+    //         const unsigned char val = (unsigned char) (255.0 *valf);
+    //         internalDrKfDepth->data[i](0) = val;
+    //         internalDrKfDepth->data[i](1) = val;
+    //         internalDrKfDepth->data[i](2) = val;
+    //     }
+    // }
+
+	uint8_t greyArr[h][w];
+	for (int _h = 0; _h < h; _h++) {
         for (int _w = 0; _w < w; _w++) {
-            const int i = _h*w + _w;
-            const float valf = (image[i] - depth_min) / (depth_max - depth_min);
-            const unsigned char val = (unsigned char) (255.0 *valf);
-            internalDrKfDepth->data[i](0) = val;
-            internalDrKfDepth->data[i](1) = val;
-            internalDrKfDepth->data[i](2) = val;
-        }
-    }
+			const int i = _h*w + _w;
+			const float valf = (image[i] - depth_min) / (depth_max - depth_min);
+			const unsigned char val = (unsigned char) (255.0 *valf);
+			greyArr[_h][_w] = val; 
+		}
+	}
+
+	Mat greyImg = Mat(h, w, CV_8U, &greyArr);
+    string greyArrWindow = "Depth Image";
+    namedWindow(greyArrWindow, WINDOW_AUTOSIZE);
+    imshow(greyArrWindow, greyImg);
+    waitKey(1);
     drKfDepthChanged = true;
 }
 

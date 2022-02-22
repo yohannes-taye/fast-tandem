@@ -29,6 +29,10 @@
 #include "IOWrapper/Output3DWrapper.h"
 #include <map>
 #include <deque>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+using namespace std;
 
 
 namespace dso
