@@ -7,11 +7,13 @@ from .module import compute_loss, eval_errors
 from .cva_mvsnet import CvaMVSNet, StageTensor
 from .datasets import make_dataloader, AugmentationPipeline
 from .utils import epoch_end_mean, TBLogger, WarmupMultiStepLR, epoch_end_mean_named
+from torch.utils.tensorboard import SummaryWriter
 
 
 class Tandem(pl.LightningModule):
     def __init__(self, hparams: dict):
         super().__init__()
+        self.writer = SummaryWriter('runs/fashion_mnist_experiment_1')
         self.hparams = hparams
         self.cva_mvsnet = CvaMVSNet(
             depth_num=self.hparams["MODEL.DEPTH_NUM"],
@@ -34,7 +36,9 @@ class Tandem(pl.LightningModule):
 
         if self.training:
             batch = self.augmentation_pipeline(batch)
-
+        
+        self.writer.add_graph(self.cva_mvsnet, (batch['image'], StageTensor(*[batch['intrinsics'][s]['K'] for s in self.cva_mvsnet.stages]), batch['cam_to_world'], batch['depth_min'], batch['depth_max']))
+        self.writer.close()
         outputs = self.cva_mvsnet(
             image=batch['image'],
             intrinsic_matrix=StageTensor(*[batch['intrinsics'][s]['K'] for s in self.cva_mvsnet.stages]),

@@ -21,6 +21,9 @@ from models import Tandem  # noqa
 from models.utils import TBLogger  # noqa
 from models.utils.load_ckpt import load_ckpt  # noqa
 
+import debugpy
+    
+
 parser = argparse.ArgumentParser()
 parser.add_argument("out_dir", help="Output directory.", type=str)
 parser.add_argument("--config", help="Path to config file.", required=True)
@@ -31,6 +34,11 @@ parser.add_argument("opts", nargs=argparse.REMAINDER,
 
 
 def main(out_dir: str, hparams: dict, pretrained: Optional[str], args):
+    
+    debugpy.listen(5678)
+    print("press play")
+    debugpy.wait_for_client()
+    
     torch.cuda.empty_cache()
  
     del args

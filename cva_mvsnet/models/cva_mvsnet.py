@@ -1,6 +1,7 @@
 from typing import Optional, NamedTuple, Dict
 import torch
 import torch.nn as nn
+from torch.utils.tensorboard import SummaryWriter
 import torch.nn.functional as F
 
 from .module import uniform_depth_range, adaptive_depth_range, FeatureNet, CostRegNet, depth_prediction, \
@@ -46,6 +47,8 @@ class CvaMVSNet(nn.Module):
         assert depth_interval_ratio[0] == 1, f"Interval ratio is w.r.t. stage 1. See docstring of this method."
 
         super(CvaMVSNet, self).__init__()
+        # self.writer = SummaryWriter('runs/fashion_mnist_experiment_1')
+
         self.stage_num = len(depth_num)
         self.stages = tuple(f"stage{idx}" for idx in range(1, self.stage_num + 1))
 
@@ -81,6 +84,9 @@ class CvaMVSNet(nn.Module):
                 nn.BatchNorm3d(1),
                 nn.ReLU(inplace=True)
             ) for stage in self.stages})
+        
+        # self.writer.add_graph(self.volume_gates)
+        # self.writer.close()
 
     @staticmethod
     def stage_prev(stage: str):

@@ -265,6 +265,7 @@ void TandemBackendImpl::CallAsync(
           std::cerr << "MVSNET IS NOT READY!!! WHY" << std::endl;
           exit(EXIT_FAILURE);
         }
+        
         output_previous = mvsnet->GetResult();
 
         //TODOME: HERE is where the depth map is diplayed on the UI 

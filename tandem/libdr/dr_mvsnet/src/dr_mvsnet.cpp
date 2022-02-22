@@ -21,6 +21,7 @@ public:
     // Try to fix CUDA errors: https://github.com/pytorch/pytorch/issues/35736
     if (torch::cuda::is_available())std::cout << "DrMvsnet torch::cuda::is_vailable == true --> seems good" << std::endl;
     else std::cerr << "DrMvsnet torch::cuda::is_vailable == false --> probably this will crash" << std::endl;
+    std::cout<<"WHAT THE FUCK IS GOING ON HERE BITCH??? " <<filename<<std::endl;
     module = torch::jit::load(filename);
     worker_thread = boost::thread(&DrMvsnetImpl::Loop, this);
   };
@@ -298,6 +299,7 @@ void DrMvsnetImpl::CallSequential() {
   auto confidence_tensor = model_output->elements()[stage].toTuple()->elements()[1].toTensor().to(torch::kCPU);
   auto depth_a = depth_tensor.accessor<float, 3>();
   auto confidence_a = confidence_tensor.accessor<float, 3>();
+  //TODOME: this is where the depth data is accessed from fromt he model 
   auto depth_dense_tensor = model_output->elements()[stage].toTuple()->elements()[3].toTensor().to(torch::kCPU);
   auto confidence_dense_tensor = model_output->elements()[stage].toTuple()->elements()[4].toTensor().to(torch::kCPU);
   auto depth_dense_a = depth_dense_tensor.accessor<float, 3>();
