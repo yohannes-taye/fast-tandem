@@ -77,7 +77,6 @@ public:
     virtual void publishCamPose(FrameShell* frame, CalibHessian* HCalib) override;
     virtual void publishDrframes(unsigned char* bgr, float* depth, float* confidence, SE3 camToWorld, CalibHessian* HCalib) override;
     virtual void pushLiveFrame(FrameHessian* image) override;
-	//HERE1
     virtual void pushDepthImage(MinimalImageB3* image) override;
     virtual bool needPushDepthImage() override;
 
@@ -106,6 +105,7 @@ private:
 
 	boost::thread runThread;
 	bool running;
+	//HERE1
 	int w,h;
 
 

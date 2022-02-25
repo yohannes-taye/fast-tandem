@@ -137,13 +137,12 @@ void TandemBackendImpl::Loop() {
 void TandemBackendImpl::CallSequential() {
   int id_time;
   call_num++;
-
+  //TODOME: Here is how to convert cv::MAt to unsigned char * 
   /* --- 3.5 CURRENT: Call MVSNet Async --- */
   std::vector<unsigned char *> bgrs_current_ptr;
   for (auto const &e : bgrs_current) bgrs_current_ptr.push_back(e.data);
   std::vector<float *> cam_to_worlds_current_ptr;
   for (auto const &e : cam_to_worlds_current) cam_to_worlds_current_ptr.push_back((float *) e.data);
-
   mvsnet->CallAsync(
       height,
       width,
@@ -165,7 +164,7 @@ void TandemBackendImpl::CallSequential() {
     if (dr_timing) id_time = dr_timer->start_timing("IntegrateScanAsync");
     fusion->IntegrateScanAsync(bgrs_previous[corrected_ref_index_previous].data, output_previous->depth, (float *) cam_to_worlds_previous[corrected_ref_index_previous].data);
     if (dr_timing) dr_timer->end_timing("IntegrateScanAsync", id_time, !setting_debugout_runquiet);
-
+    
     /* --- 4. PREVIOUS: RenderAsync for coarse tracker --- */
     std::vector<float const *> poses_to_render_previous;
     if (dense_tracking) poses_to_render_previous.push_back(coarse_tracker_depth_map_use_next->cam_to_world);
@@ -175,6 +174,9 @@ void TandemBackendImpl::CallSequential() {
     std::vector<unsigned char *> bgr_rendered_previous;
     std::vector<float *> depth_rendered_previous;
     fusion->GetRenderResult(bgr_rendered_previous, depth_rendered_previous);
+   
+    //TODOME: Comenting the two conditional statements will remove the meshing and speed it
+    
     if (dense_tracking) {
       memcpy(coarse_tracker_depth_map_use_next->depth, depth_rendered_previous[0], sizeof(float) * width * height);
       coarse_tracker_depth_map_use_next->is_valid = true; // atomic
@@ -196,11 +198,14 @@ void TandemBackendImpl::CallSequential() {
       fusion->ExtractMeshAsync(mesh_lower_corner, mesh_upper_corner);
       fusion->GetMeshSync();
       if (dr_timing) dr_timer->end_timing("fusion-mesh", id_time, !setting_debugout_runquiet);
-
+      //TODOME: commenting this will remove the mesh from from the UI
       for (dso::IOWrap::Output3DWrapper *ow : outputWrapper) ow->pushDrMesh(fusion->dr_mesh_num, fusion->dr_mesh_vert, fusion->dr_mesh_cols);
 
       has_to_wait_previous = false;
     }
+    
+    
+   
   }
 
   // Now we swap *_previous <- *_current
@@ -270,11 +275,6 @@ void TandemBackendImpl::CallAsync(
 
         //TODOME: HERE is where the depth map is diplayed on the UI 
         /* --- 2. PREVIOUS: Push depth map to output_previous wrapper --- */
-      String windowName = "The Guitar"; //Name of the window
-
-        namedWindow(windowName); // Create a window
-
-
         waitKey(1); // Wait for any keystroke in the window
         const float depth_max_value_previous = *std::max_element(output_previous->depth, output_previous->depth + width * height);
         for (dso::IOWrap::Output3DWrapper *ow : outputWrapper) {

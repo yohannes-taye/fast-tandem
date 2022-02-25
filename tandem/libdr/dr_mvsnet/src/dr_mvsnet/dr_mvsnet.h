@@ -21,7 +21,7 @@ public:
   ~DrMvsnetOutput() {
     free(depth);
     free(confidence);
-    free(depth_dense);
+    free(depth_dense);  
     free(confidence_dense);
   }
 

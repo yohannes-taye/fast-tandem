@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "fast_tandem",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/fast_tandem",
+            "args": ["preset=gui", "result_folder=/home/tmc/Project/tandem_result", "files=/home/tmc/euroc_tandem_format_1.1.beta/euroc_tandem_format/V1_01_easy/images", "calib=/home/tmc/euroc_tandem_format_1.1.beta/euroc_tandem_format/V1_01_easy/camera.txt", "mvsnet_folder=/home/tmc/tandem/tandem/exported/tandem", "mode=1"],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "tandem_dataset",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/bin/tandem_dataset",
+            "args": [
+                "preset=gui", 
+                "result_folder=/home/tmc/Project/tandem_result", 
+                "files=/home/tmc/euroc_tandem_format_1.1.beta/euroc_tandem_format/V1_01_easy/images", 
+                "calib=/home/tmc/euroc_tandem_format_1.1.beta/euroc_tandem_format/V1_01_easy/camera.txt", 
+                "mvsnet_folder=/home/tmc/tandem/tandem/exported/tandem", 
+                "mode=1"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

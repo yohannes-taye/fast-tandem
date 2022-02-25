@@ -4,8 +4,12 @@ PROJECT(${PROJECT_NAME})
 CMAKE_MINIMUM_REQUIRED(VERSION 3.9)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
+set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -DDEBUG")
+set(BUILD_TYPE Debug)
 
-set(BUILD_TYPE Release)
+
+#set(BUILD_TYPE Release)
 
 set(EXECUTABLE_OUTPUT_PATH bin)
 set(LIBRARY_OUTPUT_PATH lib)
@@ -133,11 +137,15 @@ endif ()
 # build main executable (only if we have both OpenCV and Pangolin)
 message("--- compiling tandem_dataset. ")
 add_executable(tandem_dataset ${PROJECT_SOURCE_DIR}/src/main_tandem_pangolin.cpp)
+add_executable(fast_tandem  ${PROJECT_SOURCE_DIR}/src/fast_tandem.cpp)
 target_link_libraries(tandem_dataset tandem boost_system cxsparse ${BOOST_THREAD_LIBRARY} ${LIBZIP_LIBRARY} ${Pangolin_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(fast_tandem tandem boost_system cxsparse ${BOOST_THREAD_LIBRARY} ${LIBZIP_LIBRARY} ${Pangolin_LIBRARIES} ${OpenCV_LIBS})
+
 if (MVSNET)
     target_link_libraries(tandem_dataset dr-mvsnet)
     target_link_libraries(tandem_dataset dr-fusion)
     target_compile_definitions(tandem_dataset PUBLIC MVSNET)
+
 endif ()
 
 

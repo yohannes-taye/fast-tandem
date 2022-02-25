@@ -1060,8 +1060,6 @@ void CoarseTracker::debugPlotIDepthMap(float *minID_pt, float *maxID_pt, std::ve
 
     for (IOWrap::Output3DWrapper *ow : wraps){
       ow->pushDepthImage(&mf);
-  		printf("HERE1\n");
-
     }
 
     if (debugSaveImages) {

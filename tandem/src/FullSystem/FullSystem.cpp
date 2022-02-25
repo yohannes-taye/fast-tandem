@@ -1061,7 +1061,7 @@ void FullSystem::addActiveFrame(ImageAndExposure *image, unsigned char *image_bg
       printf("\n\n\nForcing Frame Save!\n\n\n");
       needToMakeKF = true;
     }
-
+    //Commenting this out will remove the camera path 
     for (IOWrap::Output3DWrapper *ow : outputWrapper)
       ow->publishCamPose(fh->shell, &Hcalib);
 
@@ -1122,7 +1122,7 @@ void FullSystem::deliverTrackedFrame(FrameHessian *fh, bool needKF, float *rgbd_
 void FullSystem::deliverDrFrame(FrameHessian *fh, int id, unsigned char *&image_bgr, int height, int width, bool needKF) {
   int id_time;
   if (!needKF) return;
-
+  //TODO: This is where the view_num variable assigned also ref_index
   const int view_num = frameHessians.size();
   const int ref_index = view_num - 2;
 
@@ -1154,6 +1154,9 @@ void FullSystem::deliverDrFrame(FrameHessian *fh, int id, unsigned char *&image_
   const int index_offset = view_num - dr_mvsnet_view_num;
   const int corrected_ref_index = ref_index - index_offset;
   cv::Mat intrinsic_matrix_in = (cv::Mat_<float>(3, 3) << Hcalib.fxl(), 0, Hcalib.cxl(), 0, Hcalib.fyl(), Hcalib.cyl(), 0, 0, 1);
+  // std::cout<<"fxl(): "<<Hcalib.fxl()<<" cx1: "<<Hcalib.cxl()<<" fyl: "<<Hcalib.fyl()<<" cyl: "<<Hcalib.cyl()<<std::endl; 
+  
+
   std::vector<cv::Mat> bgrs_in;
   std::vector<cv::Mat> cam_to_worlds_in;
   {

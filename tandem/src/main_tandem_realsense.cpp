@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
   D455 camera(true, width, height);
   camera.StartPipeline();
 
-
+  //HERE1
   // Read Undistorter
   Undistort *undistorter;
   if (opt.calib.empty()) {
